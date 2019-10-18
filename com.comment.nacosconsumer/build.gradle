@@ -1,0 +1,36 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.2.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	//使用implementation指令的依赖不会传递     compile或者api是可以依赖传递的
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//健康监控启动程序后我们在地址栏录入 http://127.0.0.1:8801/actuator/health  即可查看当前服务的状态
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
+	compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.0.4.RELEASE'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.0.4.RELEASE'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-openfeign-core', version: '2.0.4.RELEASE'
+    // 非严格格式解析html5
+	compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.12'
+	// Hystrix实现微服务的容错处理  就是说  你需求的服务没找到的时候，通过隔离系统所依赖的服务，防止服务级联失败
+	//compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: '1.3.6.RELEASE'
+	//使用HystrixDashboard + Turbine实现可视化监控数据
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+	//nacos
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-alibaba-nacos-discovery', version: '0.9.0.RELEASE'
+	
+}

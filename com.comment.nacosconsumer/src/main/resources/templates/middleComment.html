@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>所有有用户评论</title>
+
+<!-- CSS -->
+<link rel="stylesheet"
+	th:href="@{/http://fonts.googleapis.com/css?family=Roboto:400,100,300,500}">
+<link rel="stylesheet"
+	th:href="@{/static/assets/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets/font-awesome/css/font-awesome.min.css}">
+<link rel="stylesheet" th:href="@{/assets/css/form-elements.css}">
+<link rel="stylesheet" th:href="@{/assets/css/style.css}">
+
+<!--  easyUI-->
+<link rel="stylesheet" th:href="@{/jquery-easyui-1.4.1/themes/gray/easyui.css}">
+<link rel="stylesheet" th:href="@{/jquery-easyui-1.4.1/themes/icon.css}">
+<script type="text/javascript"
+	th:src="@{/jquery-easyui-1.4.1/locale/easyui-lang-zh_CN.js}"></script>
+<script type="text/javascript"
+	th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+	<script type="text/javascript"
+	th:src="@{/jquery-easyui-1.4.1/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{http://code.jquery.com/jquery-latest.js}"></script>
+	<script type="text/javascript"  th:src="@{/jquery-easyui-1.4.1/jquery.easyui.min.js}"></script>
+<!-- Favicon and touch icons -->
+<link rel="shortcut icon" href="static/assets/ico/favicon.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144"
+	th:href="@{/assets/ico/apple-touch-icon-144-precomposed.png}">
+<link rel="apple-touch-icon-precomposed" sizes="114x114"
+	th:href="@{/assets/ico/apple-touch-icon-114-precomposed.png}">
+<link rel="apple-touch-icon-precomposed" sizes="72x72"
+	th:href="@{/assets/ico/apple-touch-icon-72-precomposed.png}">
+<link rel="apple-touch-icon-precomposed"
+	th:href="@{/assets/ico/apple-touch-icon-57-precomposed.png}">
+
+</head>
+
+<body>
+
+	<!-- Top content -->
+	<div class="top-content">
+
+		<div class="inner-bg">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-8 col-sm-offset-2 text">
+						<h1>用户中性评价</h1>
+						<div class="description"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-3 form-box">
+						<div class="form-top" style="height: 70%">
+
+							<div class="form-top-right">
+								<i class="fa fa-key"></i>
+							</div>
+						</div>
+						<div class="form-bottom" style="height: 70%">
+						<table id="tt" class="easyui-datagrid"
+									style="width: 100%; height: auto" url="/getMiddleCommentList"
+									toolbar="#tb" title="建议列表" iconCls="icon-save" 
+									rownumbers="true" pagination="true">
+									<thead>
+										<tr>
+											<th field="reviewerid" width="10%">评论人ID</th>
+											<th field="asin" width="5%">产品ID</th>
+											<th field="reviewername" width="10%">评论人姓名</th>
+											<th field="helpful" width="5%" align="center">帮助程度</th>
+											<th field="overall" width="5%" align="center">产品评级</th>
+											<th field="summary" width="10%">摘要</th>
+											<th field="unixreviewtime" width="7%">评论时间</th> 
+											<!-- <th field="reviewtime" width="10%" formatter:formatter(value)>评论时间</th> -->
+											<th field="reviewtext" width="47%">评论</th>
+										</tr>
+									</thead>
+								</table>
+						<div class="table-responsive">
+								
+
+								</div>
+							
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<!-- Javascript -->
+	<script th:src="@{/assets/js/jquery-1.11.1.min.js}"></script>
+	<script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/assets/js/jquery.backstretch.min.js}"></script>
+	<script th:src="@{/assets/js/scripts.js}"></script>
+	<script th:src="@{public/media/js/jquery-1.8.3.min.js}"></script>
+
+	<!--[if lt IE 10]>
+            <script src="static/assets/js/placeholder.js"></script>
+        <![endif]-->
+</body>
+
+<script th:inline="javascript">
+	/* type="text/javascript"  */
+	$(document).ready(function () {
+		load();
+	});
+	formatter(value){
+		var date = new Date(value);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        return y + '-' +m + '-' + d;
+	}
+	/* function load() {
+		//表单提交数据
+
+		if (jsonStr.trim().length != 0) {
+			$.ajax({
+				url : "/allComment",
+				type : 'GET', //GET
+				// async:true,    //或false,是否异步异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+				data : data1,
+				/* data:{jsonObj:"222"}, 
+				timeout : 5000, //超时时间
+				dataType : 'text', //返回的数据格式：json/xml/html/script/jsonp/text
+				success : function(data) {
+					if (data == "ok") {
+						alert("上传成功！");
+					} else {
+						alert("上传失败,失败原因：" + data);
+					}
+				},
+				error : function() {
+				}
+			})
+		} else {
+			alert("上传数据不得为空！");
+		}
+	} */
+</script>
+
+</html>

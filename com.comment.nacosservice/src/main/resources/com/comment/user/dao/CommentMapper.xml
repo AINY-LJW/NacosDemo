@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.comment.user.dao.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.comment.user.model.Comment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="reviewerID" property="reviewerid" jdbcType="VARCHAR" />
+    <result column="asin" property="asin" jdbcType="VARCHAR" />
+    <result column="reviewerName" property="reviewername" jdbcType="VARCHAR" />
+    <result column="helpful" property="helpful" jdbcType="VARCHAR" />
+    <result column="reviewText" property="reviewtext" jdbcType="VARCHAR" />
+    <result column="overall" property="overall" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="unixReviewTime" property="unixreviewtime" jdbcType="TIMESTAMP" />
+    <result column="reviewTime" property="reviewtime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, reviewerID, asin, reviewerName, helpful, reviewText, overall, summary, unixReviewTime, 
+    reviewTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.comment.user.model.CommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from comment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.comment.user.model.CommentExample" >
+    delete from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.comment.user.model.Comment" >
+    insert into comment (id, reviewerID, asin, 
+      reviewerName, helpful, reviewText, 
+      overall, summary, unixReviewTime, 
+      reviewTime)
+    values (#{id,jdbcType=VARCHAR}, #{reviewerid,jdbcType=VARCHAR}, #{asin,jdbcType=VARCHAR}, 
+      #{reviewername,jdbcType=VARCHAR}, #{helpful,jdbcType=VARCHAR}, #{reviewtext,jdbcType=VARCHAR}, 
+      #{overall,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{unixreviewtime,jdbcType=TIMESTAMP}, 
+      #{reviewtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.comment.user.model.Comment" >
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reviewerid != null" >
+        reviewerID,
+      </if>
+      <if test="asin != null" >
+        asin,
+      </if>
+      <if test="reviewername != null" >
+        reviewerName,
+      </if>
+      <if test="helpful != null" >
+        helpful,
+      </if>
+      <if test="reviewtext != null" >
+        reviewText,
+      </if>
+      <if test="overall != null" >
+        overall,
+      </if>
+      <if test="summary != null" >
+        summary,
+      </if>
+      <if test="unixreviewtime != null" >
+        unixReviewTime,
+      </if>
+      <if test="reviewtime != null" >
+        reviewTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewerid != null" >
+        #{reviewerid,jdbcType=VARCHAR},
+      </if>
+      <if test="asin != null" >
+        #{asin,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewername != null" >
+        #{reviewername,jdbcType=VARCHAR},
+      </if>
+      <if test="helpful != null" >
+        #{helpful,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewtext != null" >
+        #{reviewtext,jdbcType=VARCHAR},
+      </if>
+      <if test="overall != null" >
+        #{overall,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="unixreviewtime != null" >
+        #{unixreviewtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewtime != null" >
+        #{reviewtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.comment.user.model.CommentExample" resultType="java.lang.Integer" >
+    select count(*) from comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update comment
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reviewerid != null" >
+        reviewerID = #{record.reviewerid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.asin != null" >
+        asin = #{record.asin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reviewername != null" >
+        reviewerName = #{record.reviewername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.helpful != null" >
+        helpful = #{record.helpful,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reviewtext != null" >
+        reviewText = #{record.reviewtext,jdbcType=VARCHAR},
+      </if>
+      <if test="record.overall != null" >
+        overall = #{record.overall,jdbcType=VARCHAR},
+      </if>
+      <if test="record.summary != null" >
+        summary = #{record.summary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unixreviewtime != null" >
+        unixReviewTime = #{record.unixreviewtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.reviewtime != null" >
+        reviewTime = #{record.reviewtime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update comment
+    set id = #{record.id,jdbcType=VARCHAR},
+      reviewerID = #{record.reviewerid,jdbcType=VARCHAR},
+      asin = #{record.asin,jdbcType=VARCHAR},
+      reviewerName = #{record.reviewername,jdbcType=VARCHAR},
+      helpful = #{record.helpful,jdbcType=VARCHAR},
+      reviewText = #{record.reviewtext,jdbcType=VARCHAR},
+      overall = #{record.overall,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      unixReviewTime = #{record.unixreviewtime,jdbcType=TIMESTAMP},
+      reviewTime = #{record.reviewtime,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.comment.user.model.Comment" >
+    update comment
+    <set >
+      <if test="reviewerid != null" >
+        reviewerID = #{reviewerid,jdbcType=VARCHAR},
+      </if>
+      <if test="asin != null" >
+        asin = #{asin,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewername != null" >
+        reviewerName = #{reviewername,jdbcType=VARCHAR},
+      </if>
+      <if test="helpful != null" >
+        helpful = #{helpful,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewtext != null" >
+        reviewText = #{reviewtext,jdbcType=VARCHAR},
+      </if>
+      <if test="overall != null" >
+        overall = #{overall,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="unixreviewtime != null" >
+        unixReviewTime = #{unixreviewtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewtime != null" >
+        reviewTime = #{reviewtime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.comment.user.model.Comment" >
+    update comment
+    set reviewerID = #{reviewerid,jdbcType=VARCHAR},
+      asin = #{asin,jdbcType=VARCHAR},
+      reviewerName = #{reviewername,jdbcType=VARCHAR},
+      helpful = #{helpful,jdbcType=VARCHAR},
+      reviewText = #{reviewtext,jdbcType=VARCHAR},
+      overall = #{overall,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      unixReviewTime = #{unixreviewtime,jdbcType=TIMESTAMP},
+      reviewTime = #{reviewtime,jdbcType=DATE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

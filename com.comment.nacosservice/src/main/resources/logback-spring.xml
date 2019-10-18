@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- 属性 -->
+    <property name="CUSTOM_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread]%logger -%msg%n"/>
+    <!-- 使用include 包含 SpringBoot的默认日志配置 -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!-- 滚动日志文件 -->
+    <appender name="ROLLING-FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- 保存路径，没有则新建 -->
+        <file>logs/info/log-info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        	 <!--%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+            <fileNamePattern>logs/info/log-info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 保留30天的历史日志 -->
+            <maxHistory>30</maxHistory>
+            <!-- 基于大小和时间，这个可以有，可以没有 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 当一个日志大小大于10没B，则换一个新的日志。日志名的%i从0开始，自动递增 -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+         <!-- encoder编码规则 --> 
+        <encoder>
+         <!-- pattern模式 %d时间 %thread 线程名 %level行为级别 %logger logger名称 %method 方法名称 %message 调用方法的入参消息 -->
+            <pattern>${CUSTOM_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ROLLING-FILE-WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/warn/log-warn.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/warn/log-warn.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${CUSTOM_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.example" level="INFO">
+        <appender-ref ref="ROLLING-FILE-INFO"/>
+    </logger>
+    
+    <logger name="com.example" level="WARN">
+        <appender-ref ref="ROLLING-FILE-WARN"/>
+    </logger>
+	 <!-- 这就是上边logger没有管到的情况下 root默认接管所有logger -->
+    <root level="INFO">
+        <appender-ref ref="ROLLING-FILE-INFO"/>
+    </root>
+
+</configuration> 

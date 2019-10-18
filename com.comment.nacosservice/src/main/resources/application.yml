@@ -1,0 +1,72 @@
+server:
+  port: 6666
+  #tomcat:
+    #max-http-post-size: -1
+  max-http-header-size: 4048576
+  
+ #健康监控-开放信息 地址栏录入 http://127.0.0.1:8801/actuator/info 即可查看到上面配置中公开的信息。
+info:
+ app:
+   name: 亚马逊评论分析服务提供
+   version: 1.0
+#Eureka配置信息
+#application.name 用于指定注册到 Eureka Server 上的应用名称；
+# instance.prefer-ip-address 表示将自己的IP注册到 Eureka Server，
+#若不配置该属性，或者设置为false，则标识注册所在操作系统的hostname到 Eureka Server
+spring:
+  devtools:
+# 取消自动刷新UI页面
+    livereload: 
+      enabled: false
+#     禁用重新启动
+    restart: 
+      enabled: false
+  thymeleaf:
+#  生产环境设置为true 开发环境设置为false
+    cache: true
+  application:
+#   用于指定注册到 Eureka Server 上的应用名称；
+    name: commentAnalysis-provider
+  datasource: 
+    # 使用druid连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/commentanalysis
+    username: root
+    password: Ab111222
+    driver-class-name: com.mysql.jdbc.Driver
+    #连接池的配置信息
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  main: 
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，允许覆盖注册
+
+#nacos
+  cloud: 
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    
+    
+# MyBatis 配置
+# mybatis的mapper.xml文件的路径
+mybatis: 
+  mapper-locations: classpath:mapper/*.xml
+# mybatis的model所在的包
+  type-aliases-package: com.comment.user.model
+  configuration:
+    mapUnderscoreToCamelCase: true # 开启驼峰命名转换法
+
+  
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>用户评论分析与管理系统登录页面</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet"  th:href="@{/http://fonts.googleapis.com/css?family=Roboto:400,100,300,500}">
+        <link rel="stylesheet"  th:href="@{/static/assets/bootstrap/css/bootstrap.min.css}">
+        <link rel="stylesheet"  th:href="@{/assets/font-awesome/css/font-awesome.min.css}">
+		<link rel="stylesheet"  th:href="@{/assets/css/form-elements.css}">
+        <link rel="stylesheet"  th:href="@{/assets/css/style.css}">
+        
+        <script type="text/javascript"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+        <script type="text/javascript"  th:src="@{http://code.jquery.com/jquery-latest.js}"></script>
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="static/assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144"  th:href="@{/assets/ico/apple-touch-icon-144-precomposed.png}">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114"  th:href="@{/assets/ico/apple-touch-icon-114-precomposed.png}">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72"  th:href="@{/assets/ico/apple-touch-icon-72-precomposed.png}">
+        <link rel="apple-touch-icon-precomposed"  th:href="@{/assets/ico/apple-touch-icon-57-precomposed.png}">
+
+    </head>
+
+    <body>
+
+        <!-- Top content -->
+        <div class="top-content">
+        	
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1><strong>评论上传页面</h1>
+                            <div class="description">
+                            	
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                        	<div class="form-top">
+                        		<div class="form-top-left">
+                        			<h3>输入上传JSON数据</h3>
+                            		<p>	请注意JSON的格式:例如:[{"id":"1"},{"id":"2"}]</p>
+                            		<p class="ss">	请在下方文本框内输入JSON字符串</p>
+                        		</div>
+                        		<div class="form-top-right">
+                        			<i class="fa fa-key"></i>
+                        		</div>
+                            </div>
+                            <div class="form-bottom">
+			                    <form role="form" action=""  method="post"  class="ll" >
+			                        <div class="form-group" style="margin-left: 15%">
+			                        	 <textarea class="form-control" rows="3" cols="80" placeholder="请输入您需要上传的json字符串。。。"  name="jsonObj"></textarea>
+			                        </div>
+			                        <button type="button" class="btn" style="margin-top: 2%" onclick="uploadJson()">上传!</button>
+			                    </form>
+		                    </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+
+
+        <!-- Javascript -->
+        <script  th:src="@{/assets/js/jquery-1.11.1.min.js}"></script>
+        <script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+        <script th:src="@{/assets/js/jquery.backstretch.min.js}"></script>
+        <script th:src="@{/assets/js/scripts.js}"></script>
+        <script th:src="@{public/media/js/jquery-1.8.3.min.js}"></script>
+        
+        <!--[if lt IE 10]>
+            <script src="static/assets/js/placeholder.js"></script>
+        <![endif]-->
+
+    </body>
+    
+<script th:inline="javascript">
+/* type="text/javascript"  */
+	function uploadJson() {
+	//表单提交数据
+    var data1 = $(".ll").serialize(); 
+    var jsonStr=$(".form-control").val();
+	 if(jsonStr.trim().length!=0){ 
+		$.ajax({
+		    url:"/uploadJson",
+		    type:'POST', //GET
+		   // async:true,    //或false,是否异步异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+		    data:data1, 
+		    /* data:{jsonObj:"222"}, */
+		    timeout:5000,    //超时时间
+		    dataType:'text',    //返回的数据格式：json/xml/html/script/jsonp/text
+		    success:function(data){		 
+		    	if(data=="ok"){
+		    		alert("上传成功！");
+		    	}else{
+		    		alert("上传失败,失败原因："+data);
+		    	}
+		    },
+		    error:function(){
+		    }
+		})
+	}else{
+			alert("上传数据不得为空！");
+	} 
+	}
+
+</script>
+
+</html>

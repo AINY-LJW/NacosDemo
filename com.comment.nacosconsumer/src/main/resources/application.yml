@@ -1,0 +1,40 @@
+#服务端口
+server:
+  port: 7777
+  
+#开放信息
+info:
+  app:
+    name: 亚马逊评论分析消费端
+    version: 1.0 
+#Eureka配置信息
+spring:
+  mvc:
+    view:
+      prefix: classpath:/templates/
+  devtools:
+# 取消自动刷新UI页面
+    livereload: 
+      enabled: true
+#     禁用重新启动
+    restart: 
+      enabled: true
+  thymeleaf:
+#  生产环境设置为true 开发环境设置为false
+    cache: true
+  application:
+    name: commentAnalysis-consument
+  cloud:
+  #nacos      nacos:      discovery:        server-addr: 127.0.0.1:8848
+        
+        
+ #开启hystrix容错管理
+feign: 
+  hystrix: 
+    enabled: true
+#开启监控入口    当服务启动后可以从地址 http://ip:port/hystrix.stream 看到各自的监控信息（文本信息）。 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream 

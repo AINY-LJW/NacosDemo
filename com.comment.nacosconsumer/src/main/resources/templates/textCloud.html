@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>所有有用户评论</title>
+
+<!-- CSS -->
+<link rel="stylesheet"
+	th:href="@{/http://fonts.googleapis.com/css?family=Roboto:400,100,300,500}">
+<link rel="stylesheet"
+	th:href="@{/static/assets/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet"
+	th:href="@{/assets/font-awesome/css/font-awesome.min.css}">
+<link rel="stylesheet" th:href="@{/assets/css/form-elements.css}">
+<link rel="stylesheet" th:href="@{/assets/css/style.css}">
+<!-- jqCloud -->
+<script type="text/javascript"
+	th:src="@{/jQCloud-1.0.3/jQCloud-1.0.3/jqcloud/jqcloud-1.0.3.js}"></script>
+<link rel="stylesheet"
+	th:href="@{/jQCloud-1.0.3/jQCloud-1.0.3/jqcloud/jqcloud.css}">
+<!--Echarts  -->
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<script src="//cdn.bootcss.com/jqcloud/1.0.4/jqcloud-1.0.4.min.js"></script>
+
+
+<link rel="shortcut icon" href="static/assets/ico/favicon.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144"
+	th:href="@{/assets/ico/apple-touch-icon-144-precomposed.png}">
+<link rel="apple-touch-icon-precomposed" sizes="114x114"
+	th:href="@{/assets/ico/apple-touch-icon-114-precomposed.png}">
+<link rel="apple-touch-icon-precomposed" sizes="72x72"
+	th:href="@{/assets/ico/apple-touch-icon-72-precomposed.png}">
+<link rel="apple-touch-icon-precomposed"
+	th:href="@{/assets/ico/apple-touch-icon-57-precomposed.png}">
+
+</head>
+
+<body>
+
+	<!-- Top content -->
+	<div class="top-content">
+
+		<div class="inner-bg">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-8 col-sm-offset-2 text">
+						<h1>评论关键词云图</h1>
+						<input type="hidden" name="ss" id="hi" class="hi" />
+						<div class="description"></div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-3 form-box">
+						<div id="cloud" class="form-bottom"
+							style="height: 600px; background-color: white"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<!-- Javascript -->
+	<script th:src="@{/assets/js/jquery-1.11.1.min.js}"></script>
+	<script th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/assets/js/jquery.backstretch.min.js}"></script>
+	<script th:src="@{/assets/js/scripts.js}"></script>
+	<script th:src="@{public/media/js/jquery-1.8.3.min.js}"></script>
+
+	<!--[if lt IE 10]>
+            <script src="static/assets/js/placeholder.js"></script>
+        <![endif]-->
+</body>
+
+<script th:inline="javascript">
+	/* var word_array = [
+	 {text: "Lorem", weight: 15},
+	 {text: "Ipsum", weight: 9, link: "http://jquery.com/"},
+	 {text: "Dolor", weight: 6, html: {title: "I can haz any html attribute"}},
+	 {text: "Sit", weight: 7},
+	 {text: "Amet", weight: 5}
+	 // ...as many words as you want
+	 ]; */
+	var returndata = null;
+	jQuery(function($) {
+		/* alert(ss);
+		$(".form-bottom").jQCloud(word_array); */
+		$.ajax({
+			url : "/getTextCloudJson",
+			type : 'GET', //GET
+			// async:true,    //或false,是否异步异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+			data : {},
+			/* data:{jsonObj:"222"}, */
+			timeout : 5000, //超时时间
+			dataType : 'text', //返回的数据格式：json/xml/html/script/jsonp/text
+			success : function(data) {
+				returndata = data;
+				$("#hi").val(data);
+				option.series[0].data = data;
+			},
+			error : function() {
+			}
+		})
+	});
+	require.config({
+		paths : {
+			echarts : 'http://echarts.baidu.com/build/dist'
+		}
+	});
+
+	// 使用Echarts
+	require([ 'echarts', 'echarts/chart/wordCloud', //字符云
+	], function(ec) {
+		// 基于准备好的dom，初始化echarts图表
+		var myChart = ec.init(document.getElementById('cloud'));
+		function createRandomItemStyle() {
+			return {
+				normal : {
+					color : 'rgb('
+							+ [ Math.round(Math.random() * 160),
+									Math.round(Math.random() * 160),
+									Math.round(Math.random() * 160) ].join(',')
+							+ ')'
+				}
+			};
+		}
+		option = {
+			title : {
+				text : 'YTC Trends',
+				link : 'http://localhost:8802/homePage'
+			},
+			tooltip : {
+				show : false
+			},
+			series : [ {
+				name : '评论详情及评分',
+				type : 'wordCloud',
+				size : [ '100%', '100%' ],
+				textRotation : [ 0, 45, 90, -45 ],
+				textPadding : 0,
+				autoSize : {
+					enable : true,
+					minSize : 200
+				},
+				itemStyle : createRandomItemStyle(),
+
+			 /*  data: [
+			      {
+			          name: "Macys",
+			          value: 6181,
+			         itemStyle: createRandomItemStyle()
+			      },
+			      {
+			          name: "Amy Schumer",
+			          value: 222,
+			         itemStyle: createRandomItemStyle()
+			      },
+			      {
+			          name: "Point Break",
+			          value: 222,
+			          itemStyle: createRandomItemStyle()
+			      }
+			  ]        */
+			} ]
+		};
+		// option.series[0].data = JSON.parse(returndata);
+		
+		 var jj = JSON.parse(returndata);
+		for (var j = 0; j < jj.length; j++) {
+		
+			jj[j].itemStyle = createRandomItemStyle()
+		}
+	//	console.log(jj);
+		option.series[0].data = jj; 
+		// 为echarts对象加载数据 
+		myChart.setOption(option);
+	});
+
+</script>
+
+</html>

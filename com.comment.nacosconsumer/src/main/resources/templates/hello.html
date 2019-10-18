@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+</head>
+<body>
+<h1>这是你的thymeleaf页面</h1>
+<span th:text="'你是：'+${key}">SB</span> 
+<table>
+    <tr>
+      <th>NAME</th>
+      <th>PRICE</th>
+      <th>IN STOCK</th>
+    </tr>
+    <a href="http://gmc6.jiuqi.com.cn">hahahaha </a>
+    <tr th:each="prod : ${comments}">
+      <td th:text="${prod.name}">Onions</td>
+      <td th:text="${prod.price}">2.41</td>
+      <td th:text="${prod.age}">yes</td>
+    </tr>
+  </table>
+</body>
+</html>
